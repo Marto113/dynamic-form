@@ -5,111 +5,137 @@ export const basicSchema: FormSchema = {
 
   fields: [
     {
-      type: 'text',
-      name: 'firstName',
-      label: 'First Name',
+      type: 'group',
+      name: 'personalInfo',
+      label: 'Personal Information',
 
-      validation: {
-        required: true,
-        minLength: 2,
-      },
-    },
+      fields: [
+        {
+          type: 'text',
+          name: 'firstName',
+          label: 'First Name',
 
-    {
-      type: 'text',
-      name: 'lastName',
-      label: 'Last Name',
+          validation: {
+            required: true,
+            minLength: 2,
+          },
+        },
 
-      validation: {
-        required: true,
-        minLength: 2,
-      },
-    },
+        {
+          type: 'text',
+          name: 'lastName',
+          label: 'Last Name',
 
-    {
-      type: 'text',
-      name: 'email',
-      label: 'Email',
+          validation: {
+            required: true,
+            minLength: 2,
+          },
+        },
 
-      validation: {
-        required: true,
-        email: true,
-      },
-    },
+        {
+          type: 'text',
+          name: 'email',
+          label: 'Email',
 
-    {
-      type: 'text',
-      name: 'phone',
-      label: 'Phone Number',
-
-      validation: {
-        required: true,
-        pattern: '^\\\\+?[0-9]+$',
-      },
-    },
-
-    {
-      type: 'validated-text',
-      name: 'passportNumber',
-      label: 'Passport Number',
-
-      validation: {
-        required: true,
-        minLength: 8,
-        maxLength: 12,
-      },
-    },
-
-    {
-      type: 'textarea',
-      name: 'about',
-      label: 'About Yourself',
-
-      validation: {
-        required: true,
-        minLength: 10,
-      },
-    },
-
-    {
-      type: 'dropdown',
-      name: 'country',
-      label: 'Country',
-      options: [
-        'Bulgaria',
-        'Germany',
-        'France',
-        'USA',
+          validation: {
+            required: true,
+            email: true,
+          },
+        },
       ],
-
-      validation: {
-        required: true,
-      },
     },
 
     {
-      type: 'radio',
-      name: 'gender',
-      label: 'Gender',
-      options: [
-        'Male',
-        'Female',
-        'Other',
+      type: 'group',
+      name: 'documents',
+      label: 'Documents Information',
+
+      fields: [
+        {
+          type: 'validated-text',
+          name: 'passportNumber',
+          label: 'Passport Number',
+
+          validation: {
+            required: true,
+            minLength: 8,
+            maxLength: 12,
+          },
+        },
+
+        {
+          type: 'text',
+          name: 'phone',
+          label: 'Phone Number',
+
+          validation: {
+            required: true,
+            pattern: '^\\+?[0-9\\- ]+$',
+          },
+        },
       ],
-
-      validation: {
-        required: true,
-      },
     },
 
     {
-      type: 'checkbox',
-      name: 'acceptedTerms',
-      label: 'Accept Terms and Conditions',
+      type: 'group',
+      name: 'additionalInfo',
+      label: 'Additional Information',
 
-      validation: {
-        required: true,
-      },
+      fields: [
+        {
+          type: 'textarea',
+          name: 'about',
+          label: 'About Yourself',
+
+          validation: {
+            required: true,
+            minLength: 10,
+          },
+        },
+
+        {
+          type: 'dropdown',
+          name: 'country',
+          label: 'Country',
+
+          options: [
+            'Bulgaria',
+            'Germany',
+            'France',
+            'USA',
+          ],
+
+          validation: {
+            required: true,
+          },
+        },
+
+        {
+          type: 'radio',
+          name: 'gender',
+          label: 'Gender',
+
+          options: [
+            'Male',
+            'Female',
+            'Other',
+          ],
+
+          validation: {
+            required: true,
+          },
+        },
+
+        {
+          type: 'checkbox',
+          name: 'acceptedTerms',
+          label: 'Accept Terms and Conditions',
+
+          validation: {
+            required: true,
+          },
+        },
+      ],
     },
   ],
 };

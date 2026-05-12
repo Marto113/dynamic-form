@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import DynamicField from './DynamicField';
+import RenderNode from './RenderNode';
 
 type Props = {
   schema: any;
@@ -10,9 +10,14 @@ const FormRenderer = ({ schema }: Props) => {
     <div>
       <h2>{schema.title}</h2>
 
-      {schema.fields.map((field: any) => (
-        <DynamicField key={field.name} field={field} />
-      ))}
+      {schema.fields.map(
+        (node: any) => (
+          <RenderNode
+            key={node.name}
+            node={node}
+          />
+        )
+      )}
     </div>
   );
 };

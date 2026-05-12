@@ -20,19 +20,55 @@ export type BaseField = {
   validation?: ValidationConfig;
 };
 
-export type DropdownField = BaseField & {
-  type: 'dropdown';
+export type TextField =
+  BaseField & {
+    type: 'text';
+  };
 
-  options: string[];
-};
+export type TextAreaField =
+  BaseField & {
+    type: 'textarea';
+  };
 
-export type RadioField = BaseField & {
-  type: 'radio';
+export type CheckboxField =
+  BaseField & {
+    type: 'checkbox';
+  };
 
-  options: string[];
-};
+export type DropdownField =
+  BaseField & {
+    type: 'dropdown';
 
-export type FormField = BaseField | DropdownField | RadioField;
+    options: string[];
+  };
+
+export type RadioField =
+  BaseField & {
+    type: 'radio';
+
+    options: string[];
+  };
+
+export type ValidatedTextField =
+  BaseField & {
+    type: 'validated-text';
+  };
+
+export type GroupField =
+  BaseField & {
+    type: 'group';
+
+    fields: FormField[];
+  };
+
+export type FormField =
+  | TextField
+  | TextAreaField
+  | CheckboxField
+  | DropdownField
+  | RadioField
+  | ValidatedTextField
+  | GroupField;
 
 export type FormSchema = {
   title: string;
