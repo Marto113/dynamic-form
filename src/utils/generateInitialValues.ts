@@ -1,16 +1,52 @@
-export const generateInitialValues = (schema: any) => {
-  const values: Record<string, any> = {};
+import type {
+  FormField,
+  FormSchema,
+} from '../types/form.types';
 
-  schema.fields.forEach((field: any) => {
-    switch (field.type) {
-      case 'checkbox':
-        values[field.name] = false;
-        break;
+const generateFieldValue = (
+  field: FormField
+): unknown => {
+  if (field.type === 'group') {
+    const groupValues: Record<
+      string,
+      unknown
+    > = {};
 
-      default:
-        values[field.name] = '';
-    }
-  });
+    field.fields.forEach(
+      (child) => {
+        groupValues[
+          child.name
+        ] = generateFieldValue(
+          child
+        );
+      }
+    );
 
-  return values;
+    return groupValues;
+  }
+
+  if (field.type === 'checkbox') {
+    return false;
+  }
+
+  return '';
 };
+
+export const generateInitialValues =
+  (schema: FormSchema) => {
+    const values: Record<
+      string,
+      unknown
+    > = {};
+
+    schema.fields.forEach(
+      (field) => {
+        values[field.name] =
+          generateFieldValue(
+            field
+          );
+      }
+    );
+
+    return values;
+  };

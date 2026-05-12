@@ -1,4 +1,9 @@
-import { memo } from 'react';
+import type {
+  FormField,
+  DropdownField,
+  RadioField,
+} from '../../../types/form.types';
+
 import TextFieldComponent from '../fields/TextFieldComponent';
 import TextAreaComponent from '../fields/TextAreaComponent';
 import DropdownComponent from '../fields/DropdownComponent';
@@ -7,41 +12,71 @@ import RadioComponent from '../fields/RadioComponent';
 import ValidatedTextFieldComponent from '../fields/ValidatedTextFieldComponent';
 
 type Props = {
-  field: any;
+  field: FormField;
+  fieldPath: string;
 };
 
-const DynamicField = ({ field }: Props) => {
+const DynamicField = ({
+  field,
+  fieldPath,
+}: Props) => {
+  console.log(fieldPath);
+
   switch (field.type) {
     case 'text':
-      return <TextFieldComponent name={field.name} label={field.label} />;
+      return (
+        <TextFieldComponent
+          name={fieldPath}
+          label={field.label}
+        />
+      );
 
     case 'textarea':
-      return <TextAreaComponent name={field.name} label={field.label} />;
+      return (
+        <TextAreaComponent
+          name={fieldPath}
+          label={field.label}
+        />
+      );
 
     case 'dropdown':
       return (
         <DropdownComponent
-          name={field.name}
+          name={fieldPath}
           label={field.label}
-          options={field.options}
+          options={
+            (field as DropdownField)
+              .options
+          }
         />
       );
 
     case 'checkbox':
-      return <CheckboxComponent name={field.name} label={field.label} />;
+      return (
+        <CheckboxComponent
+          name={fieldPath}
+          label={field.label}
+        />
+      );
 
     case 'radio':
       return (
         <RadioComponent
-          name={field.name}
+          name={fieldPath}
           label={field.label}
-          options={field.options}
+          options={
+            (field as RadioField)
+              .options
+          }
         />
       );
 
     case 'validated-text':
       return (
-        <ValidatedTextFieldComponent name={field.name} label={field.label} />
+        <ValidatedTextFieldComponent
+          name={fieldPath}
+          label={field.label}
+        />
       );
 
     default:
@@ -49,4 +84,4 @@ const DynamicField = ({ field }: Props) => {
   }
 };
 
-export default memo(DynamicField);
+export default DynamicField;

@@ -17,6 +17,8 @@ const FormContainer = ({ schema }: Props) => {
     return generateInitialValues(schema);
   }, [schema]);
 
+  console.log(initialValues);
+
   return (
     <Formik
       initialValues={initialValues}

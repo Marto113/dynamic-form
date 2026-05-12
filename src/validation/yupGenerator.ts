@@ -1,26 +1,82 @@
 import * as Yup from 'yup';
-import type { FormSchema, FormField } from '../types/form.types';
+
+import type {
+  FormField,
+  FormSchema,
+} from '../types/form.types';
+
 import { validationMappings } from './validationMappings';
 
-export const generateYupSchema = (schema: FormSchema) => {
-  const shape: Record<string, Yup.AnySchema> = {};
+const generateFieldValidation = (
+  field: FormField
+): Yup.AnySchema => {
 
-  schema.fields.forEach((field: FormField) => {
-    let validator = Yup.string();
+  if (field.type === 'group') {
+    const groupShape: Record<
+      string,
+      Yup.AnySchema
+    > = {};
 
-    if (field.validation) {
-      Object.entries(field.validation).forEach(([rule, value]) => {
+    field.fields.forEach(
+      (child) => {
+        groupShape[child.name] =
+          generateFieldValidation(
+            child
+          );
+      }
+    );
+
+    return Yup.object(
+      groupShape
+    );
+  }
+
+  /*
+    DEFAULT STRING VALIDATOR
+  */
+
+  let validator =
+    Yup.string();
+
+  if (field.validation) {
+    Object.entries(
+      field.validation
+    ).forEach(
+      ([rule, value]) => {
         const mapping =
-          validationMappings[rule as keyof typeof validationMappings];
+          validationMappings[
+          rule as keyof typeof validationMappings
+          ];
 
         if (mapping) {
-          validator = mapping(validator, value as never);
+          validator = mapping(
+            validator,
+            value as never
+          );
         }
-      });
-    }
+      }
+    );
+  }
 
-    shape[field.name] = validator;
-  });
+  return validator;
+};
+
+export const generateYupSchema = (
+  schema: FormSchema
+) => {
+  const shape: Record<
+    string,
+    Yup.AnySchema
+  > = {};
+
+  schema.fields.forEach(
+    (field) => {
+      shape[field.name] =
+        generateFieldValidation(
+          field
+        );
+    }
+  );
 
   return Yup.object(shape);
 };
