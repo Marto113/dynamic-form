@@ -1,4 +1,6 @@
-export const basicSchema = {
+import type { FormSchema } from '../types/form.types';
+
+export const basicSchema: FormSchema = {
   title: 'User Registration Form',
 
   fields: [
@@ -6,18 +8,67 @@ export const basicSchema = {
       type: 'text',
       name: 'firstName',
       label: 'First Name',
+
+      validation: {
+        required: true,
+        minLength: 2,
+      },
     },
 
     {
       type: 'text',
       name: 'lastName',
       label: 'Last Name',
+
+      validation: {
+        required: true,
+        minLength: 2,
+      },
+    },
+
+    {
+      type: 'text',
+      name: 'email',
+      label: 'Email',
+
+      validation: {
+        required: true,
+        email: true,
+      },
+    },
+
+    {
+      type: 'text',
+      name: 'phone',
+      label: 'Phone Number',
+
+      validation: {
+        required: true,
+        pattern: '^\\\\+?[0-9]+$',
+      },
+    },
+
+    {
+      type: 'validated-text',
+      name: 'passportNumber',
+      label: 'Passport Number',
+
+      validation: {
+        required: true,
+        minLength: 8,
+        maxLength: 12,
+      },
     },
 
     {
       type: 'textarea',
       name: 'about',
       label: 'About Yourself',
+
+      validation: {
+        required: true,
+        minLength: 10,
+      },
     },
 
     {
@@ -28,13 +79,12 @@ export const basicSchema = {
         'Bulgaria',
         'Germany',
         'France',
+        'USA',
       ],
-    },
 
-    {
-      type: 'checkbox',
-      name: 'acceptedTerms',
-      label: 'Accept Terms',
+      validation: {
+        required: true,
+      },
     },
 
     {
@@ -44,13 +94,22 @@ export const basicSchema = {
       options: [
         'Male',
         'Female',
+        'Other',
       ],
+
+      validation: {
+        required: true,
+      },
     },
 
     {
-      type: 'validated-text',
-      name: 'passportNumber',
-      label: 'Passport Number',
+      type: 'checkbox',
+      name: 'acceptedTerms',
+      label: 'Accept Terms and Conditions',
+
+      validation: {
+        required: true,
+      },
     },
   ],
 };

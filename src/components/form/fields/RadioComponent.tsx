@@ -1,8 +1,6 @@
 import { memo } from 'react';
-
 import { FastField } from 'formik';
 import type { FieldProps } from 'formik';
-
 import {
   FormControl,
   FormControlLabel,
@@ -17,20 +15,12 @@ type Props = {
   options: string[];
 };
 
-const RadioComponent = ({
-  name,
-  label,
-  options,
-}: Props) => {
+const RadioComponent = ({ name, label, options }: Props) => {
   return (
     <FastField name={name}>
-      {({
-        field,
-      }: FieldProps) => (
+      {({ field }: FieldProps) => (
         <FormControl>
-          <FormLabel>
-            {label}
-          </FormLabel>
+          <FormLabel>{label}</FormLabel>
 
           <RadioGroup {...field}>
             {options.map((option) => (
@@ -48,6 +38,4 @@ const RadioComponent = ({
   );
 };
 
-export default memo(
-  RadioComponent
-);
+export default memo(RadioComponent);

@@ -1,5 +1,4 @@
 import { memo } from 'react';
-
 import TextFieldComponent from '../fields/TextFieldComponent';
 import TextAreaComponent from '../fields/TextAreaComponent';
 import DropdownComponent from '../fields/DropdownComponent';
@@ -11,25 +10,13 @@ type Props = {
   field: any;
 };
 
-const DynamicField = ({
-  field,
-}: Props) => {
+const DynamicField = ({ field }: Props) => {
   switch (field.type) {
     case 'text':
-      return (
-        <TextFieldComponent
-          name={field.name}
-          label={field.label}
-        />
-      );
+      return <TextFieldComponent name={field.name} label={field.label} />;
 
     case 'textarea':
-      return (
-        <TextAreaComponent
-          name={field.name}
-          label={field.label}
-        />
-      );
+      return <TextAreaComponent name={field.name} label={field.label} />;
 
     case 'dropdown':
       return (
@@ -41,12 +28,7 @@ const DynamicField = ({
       );
 
     case 'checkbox':
-      return (
-        <CheckboxComponent
-          name={field.name}
-          label={field.label}
-        />
-      );
+      return <CheckboxComponent name={field.name} label={field.label} />;
 
     case 'radio':
       return (
@@ -59,10 +41,7 @@ const DynamicField = ({
 
     case 'validated-text':
       return (
-        <ValidatedTextFieldComponent
-          name={field.name}
-          label={field.label}
-        />
+        <ValidatedTextFieldComponent name={field.name} label={field.label} />
       );
 
     default:

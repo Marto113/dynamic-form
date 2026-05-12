@@ -1,34 +1,19 @@
 import { memo } from 'react';
-
 import { FastField } from 'formik';
 import type { FieldProps } from 'formik';
-
-import {
-  Checkbox,
-  FormControlLabel,
-} from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 type Props = {
   name: string;
   label: string;
 };
 
-const CheckboxComponent = ({
-  name,
-  label,
-}: Props) => {
+const CheckboxComponent = ({ name, label }: Props) => {
   return (
     <FastField name={name}>
-      {({
-        field,
-      }: FieldProps) => (
+      {({ field }: FieldProps) => (
         <FormControlLabel
-          control={
-            <Checkbox
-              {...field}
-              checked={field.value}
-            />
-          }
+          control={<Checkbox {...field} checked={field.value} />}
           label={label}
         />
       )}
@@ -36,6 +21,4 @@ const CheckboxComponent = ({
   );
 };
 
-export default memo(
-  CheckboxComponent
-);
+export default memo(CheckboxComponent);

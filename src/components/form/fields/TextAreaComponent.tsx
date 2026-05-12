@@ -1,8 +1,6 @@
 import { memo } from 'react';
-
 import { FastField } from 'formik';
 import type { FieldProps } from 'formik';
-
 import { TextField } from '@mui/material';
 
 type Props = {
@@ -10,16 +8,10 @@ type Props = {
   label: string;
 };
 
-const TextAreaComponent = ({
-  name,
-  label,
-}: Props) => {
+const TextAreaComponent = ({ name, label }: Props) => {
   return (
     <FastField name={name}>
-      {({
-        field,
-        meta,
-      }: FieldProps) => (
+      {({ field, meta }: FieldProps) => (
         <TextField
           {...field}
           multiline
@@ -27,20 +19,12 @@ const TextAreaComponent = ({
           fullWidth
           margin="normal"
           label={label}
-          error={
-            meta.touched &&
-            Boolean(meta.error)
-          }
-          helperText={
-            meta.touched &&
-            meta.error
-          }
+          error={meta.touched && Boolean(meta.error)}
+          helperText={meta.touched && meta.error}
         />
       )}
     </FastField>
   );
 };
 
-export default memo(
-  TextAreaComponent
-);
+export default memo(TextAreaComponent);

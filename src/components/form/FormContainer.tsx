@@ -1,43 +1,34 @@
 import { memo, useMemo } from 'react';
-
-import {
-  Formik,
-  Form,
-} from 'formik';
-
+import { generateYupSchema } from '../../validation/yupGenerator';
+import { Formik, Form } from 'formik';
 import FormRenderer from './renderer/FormRenderer';
-
 import { generateInitialValues } from '../../utils/generateInitialValues';
 
 type Props = {
   schema: any;
 };
 
-const FormContainer = ({
-  schema,
-}: Props) => {
-  const initialValues =
-    useMemo(() => {
-      return generateInitialValues(
-        schema
-      );
-    }, [schema]);
+const FormContainer = ({ schema }: Props) => {
+  const validationSchema = useMemo(() => {
+    return generateYupSchema(schema);
+  }, [schema]);
+
+  const initialValues = useMemo(() => {
+    return generateInitialValues(schema);
+  }, [schema]);
 
   return (
     <Formik
       initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log(values);
       }}
     >
       <Form>
-        <FormRenderer
-          schema={schema}
-        />
+        <FormRenderer schema={schema} />
 
-        <button type="submit">
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </Form>
     </Formik>
   );
