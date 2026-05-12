@@ -15,7 +15,10 @@ const RenderNode = ({
 }: Props) => {
   const { values } = useFormikContext();
 
-  const isVisible = checkVisibility(values, node.visibility);
+  const isVisible = checkVisibility(
+    values,
+    node.visibility
+  );
 
   if (!isVisible) {
     return null;

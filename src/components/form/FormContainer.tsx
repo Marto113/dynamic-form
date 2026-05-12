@@ -3,9 +3,11 @@ import { generateYupSchema } from '../../validation/yupGenerator';
 import { Formik, Form } from 'formik';
 import FormRenderer from './renderer/FormRenderer';
 import { generateInitialValues } from '../../utils/generateInitialValues';
+import type { FormSchema } from '../../types/form.types';
+import { filterHiddenFields } from '../../utils/filterOutput';
 
 type Props = {
-  schema: any;
+  schema: FormSchema;
 };
 
 const FormContainer = ({ schema }: Props) => {
@@ -15,7 +17,7 @@ const FormContainer = ({ schema }: Props) => {
 
   const validationSchema = useMemo(() => {
     return generateYupSchema(schema, initialValues);
-  }, [schema]);
+  }, [schema, initialValues]);
 
 
   return (
@@ -23,7 +25,12 @@ const FormContainer = ({ schema }: Props) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
+        const filteredValues = filterHiddenFields(
+          schema,
+          values
+        )
+
+        console.log(filteredValues);
       }}
     >
       <Form>
