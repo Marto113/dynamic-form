@@ -20,7 +20,7 @@ const DynamicField = ({
   field,
   fieldPath,
 }: Props) => {
-  console.log(fieldPath);
+  // console.log(fieldPath);
 
   switch (field.type) {
     case 'text':

@@ -1,15 +1,23 @@
 import * as Yup from 'yup';
-
 import type {
   FormField,
   FormSchema,
 } from '../types/form.types';
-
 import { validationMappings } from './validationMappings';
+import { checkVisibility } from '../utils/checkVisibility';
 
 const generateFieldValidation = (
-  field: FormField
+  field: FormField,
+  values: unknown
 ): Yup.AnySchema => {
+  const isVisible = checkVisibility(
+    values,
+    field.visibility
+  );
+
+  if (!isVisible) {
+    return Yup.mixed().notRequired();
+  }
 
   if (field.type === 'group') {
     const groupShape: Record<
@@ -21,19 +29,14 @@ const generateFieldValidation = (
       (child) => {
         groupShape[child.name] =
           generateFieldValidation(
-            child
+            child,
+            values
           );
       }
     );
 
-    return Yup.object(
-      groupShape
-    );
+    return Yup.object(groupShape);
   }
-
-  /*
-    DEFAULT STRING VALIDATOR
-  */
 
   let validator =
     Yup.string();
@@ -62,7 +65,8 @@ const generateFieldValidation = (
 };
 
 export const generateYupSchema = (
-  schema: FormSchema
+  schema: FormSchema,
+  values: unknown
 ) => {
   const shape: Record<
     string,
@@ -73,7 +77,8 @@ export const generateYupSchema = (
     (field) => {
       shape[field.name] =
         generateFieldValidation(
-          field
+          field,
+          values
         );
     }
   );

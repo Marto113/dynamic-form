@@ -52,15 +52,68 @@ export const basicSchema: FormSchema = {
 
       fields: [
         {
-          type: 'validated-text',
-          name: 'passportNumber',
-          label: 'Passport Number',
+          type: 'dropdown',
+          name: 'documentType',
+          label: 'Document Type',
+
+          options: [
+            'passport',
+            'personal-id',
+          ],
 
           validation: {
             required: true,
-            minLength: 8,
-            maxLength: 12,
           },
+        },
+
+        {
+          type: 'group',
+          name: 'passportGroup',
+          label: 'Passport Information',
+
+          visibility: {
+            dependsOn: 'documents.documentType',
+            equals: 'passport',
+          },
+
+          fields: [
+            {
+              type: 'validated-text',
+              name: 'passportNumber',
+              label: 'Passport Number',
+
+              validation: {
+                required: true,
+                minLength: 8,
+                maxLength: 12,
+              },
+            },
+          ],
+        },
+
+        {
+          type: 'group',
+          name: 'personalIdGroup',
+          label: 'Personal ID Information',
+
+          visibility: {
+            dependsOn: 'documents.documentType',
+            equals: 'personal-id',
+          },
+
+          fields: [
+            {
+              type: 'text',
+              name: 'personalId',
+
+              label: 'Personal ID',
+
+              validation: {
+                required: true,
+                pattern: '^[0-9]+$',
+              },
+            },
+          ],
         },
 
         {

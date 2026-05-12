@@ -9,15 +9,14 @@ type Props = {
 };
 
 const FormContainer = ({ schema }: Props) => {
-  const validationSchema = useMemo(() => {
-    return generateYupSchema(schema);
-  }, [schema]);
-
   const initialValues = useMemo(() => {
     return generateInitialValues(schema);
   }, [schema]);
 
-  console.log(initialValues);
+  const validationSchema = useMemo(() => {
+    return generateYupSchema(schema, initialValues);
+  }, [schema]);
+
 
   return (
     <Formik

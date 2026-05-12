@@ -10,6 +10,12 @@ export type ValidationConfig = {
   pattern?: string;
 };
 
+export type VisibilityConfig = {
+  dependsOn: string;
+
+  equals: unknown;
+};
+
 export type BaseField = {
   type: string;
 
@@ -18,6 +24,8 @@ export type BaseField = {
   label: string;
 
   validation?: ValidationConfig;
+
+  visibility?: VisibilityConfig;
 };
 
 export type TextField =
