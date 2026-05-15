@@ -13,7 +13,9 @@ export type ValidationConfig = {
 export type VisibilityConfig = {
   dependsOn: string;
 
-  equals: unknown;
+  equals?: unknown;
+
+  notEquals?: unknown;
 };
 
 export type DynamicValidationRule = {
@@ -22,6 +24,14 @@ export type DynamicValidationRule = {
   equals: unknown;
 
   rules: ValidationConfig;
+};
+
+export type AutoFillConfig = {
+  type: string;
+
+  dependencies: string[];
+
+  targetField: string;
 };
 
 export type BaseField = {
@@ -77,6 +87,8 @@ export type GroupField =
     type: 'group';
 
     fields: FormField[];
+
+    autoFill?: AutoFillConfig;
   };
 
 export type FormField =

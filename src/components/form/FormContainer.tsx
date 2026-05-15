@@ -10,6 +10,7 @@ import { generateYupSchema } from '../../validation/yupGenerator';
 import { generateInitialValues } from '../../utils/generateInitialValues';
 import { filterHiddenFields } from '../../utils/filterOutput';
 import type { FormSchema } from '../../types/form.types';
+import AutoFillHandler from './AutoFillHandler';
 
 type Props = {
   schema: FormSchema;
@@ -56,6 +57,8 @@ const FormContainer = ({ schema }: Props) => {
       validateOnBlur
     >
       <Form>
+        <AutoFillHandler schema={schema} />
+
         <FormRenderer schema={schema} />
 
         <button type="submit">

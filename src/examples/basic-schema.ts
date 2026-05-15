@@ -96,7 +96,25 @@ export const basicSchema: FormSchema = {
             },
           ],
         },
+      ],
+    },
 
+    {
+      type: 'group',
+      name: 'contactInfo',
+      label: 'Contact Information',
+
+      autoFill: {
+        type: 'phone-to-country',
+
+        dependencies: [
+          'contactInfo.phone',
+        ],
+
+        targetField: 'country',
+      },
+
+      fields: [
         {
           type: 'text',
           name: 'phone',
@@ -104,33 +122,31 @@ export const basicSchema: FormSchema = {
 
           validation: {
             required: true,
-            pattern: '^\\+?[0-9\\- ]+$',
+            pattern:
+              '^\\+?[0-9\\- ]+$',
           },
         },
-      ],
-    },
 
-    {
-      type: 'group',
-      name: 'additionalInfo',
-      label: 'Additional Information',
-
-      fields: [
         {
-          type: 'textarea',
-          name: 'about',
-          label: 'About Yourself',
+          type: 'text',
+          name: 'country',
+          label: 'Detected Country',
 
-          validation: {
-            required: true,
-            minLength: 10,
+          visibility: {
+            dependsOn: 'contactInfo.country',
+            notEquals: 'Unknown',
           },
         },
 
         {
           type: 'dropdown',
-          name: 'country',
-          label: 'Country',
+          name: 'manualCountry',
+          label: 'Select Country',
+
+          visibility: {
+            dependsOn: 'contactInfo.country',
+            equals: 'Unknown',
+          },
 
           options: [
             'Bulgaria',
@@ -138,38 +154,8 @@ export const basicSchema: FormSchema = {
             'France',
             'USA',
           ],
-
-          validation: {
-            required: true,
-          },
-        },
-
-        {
-          type: 'radio',
-          name: 'gender',
-          label: 'Gender',
-
-          options: [
-            'Male',
-            'Female',
-            'Other',
-          ],
-
-          validation: {
-            required: true,
-          },
-        },
-
-        {
-          type: 'checkbox',
-          name: 'acceptedTerms',
-          label: 'Accept Terms and Conditions',
-
-          validation: {
-            required: true,
-          },
         },
       ],
-    },
+    }
   ],
 };

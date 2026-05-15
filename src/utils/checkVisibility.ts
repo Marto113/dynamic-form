@@ -14,5 +14,27 @@ export const checkVisibility = (
     visibility.dependsOn
   );
 
-  return dependencyValue === visibility.equals;
+
+  console.log({
+    dependsOn:
+      visibility.dependsOn,
+
+    dependencyValue,
+
+    equals:
+      visibility.equals,
+
+    notEquals:
+      visibility.notEquals,
+  });
+
+  if (visibility.equals !== undefined) {
+    return dependencyValue === visibility.equals;
+  }
+
+  if (visibility.notEquals !== undefined) {
+    return dependencyValue !== visibility.notEquals;
+  }
+
+  return true;
 };
