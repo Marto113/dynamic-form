@@ -67,49 +67,30 @@ export const basicSchema: FormSchema = {
         },
 
         {
-          type: 'group',
-          name: 'passportGroup',
-          label: 'Passport Information',
+          type: 'text',
+          name: 'documentNumber',
+          label: 'Document Number',
 
-          visibility: {
-            dependsOn: 'documents.documentType',
-            equals: 'passport',
+          validation: {
+            required: true,
           },
 
-          fields: [
+          dynamicValidation: [
             {
-              type: 'validated-text',
-              name: 'passportNumber',
-              label: 'Passport Number',
+              dependsOn: 'documents.documentType',
+              equals: 'passport',
 
-              validation: {
-                required: true,
+              rules: {
                 minLength: 8,
                 maxLength: 12,
               },
             },
-          ],
-        },
 
-        {
-          type: 'group',
-          name: 'personalIdGroup',
-          label: 'Personal ID Information',
-
-          visibility: {
-            dependsOn: 'documents.documentType',
-            equals: 'personal-id',
-          },
-
-          fields: [
             {
-              type: 'text',
-              name: 'personalId',
+              dependsOn: 'documents.documentType',
+              equals: 'personal-id',
 
-              label: 'Personal ID',
-
-              validation: {
-                required: true,
+              rules: {
                 pattern: '^[0-9]+$',
               },
             },

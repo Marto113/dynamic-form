@@ -1,10 +1,15 @@
 import { memo, useMemo } from 'react';
-import { generateYupSchema } from '../../validation/yupGenerator';
-import { Formik, Form } from 'formik';
+import {
+  Formik,
+  Form,
+  yupToFormErrors,
+} from 'formik';
+import * as Yup from 'yup';
 import FormRenderer from './renderer/FormRenderer';
+import { generateYupSchema } from '../../validation/yupGenerator';
 import { generateInitialValues } from '../../utils/generateInitialValues';
-import type { FormSchema } from '../../types/form.types';
 import { filterHiddenFields } from '../../utils/filterOutput';
+import type { FormSchema } from '../../types/form.types';
 
 type Props = {
   schema: FormSchema;
@@ -15,28 +20,47 @@ const FormContainer = ({ schema }: Props) => {
     return generateInitialValues(schema);
   }, [schema]);
 
-  const validationSchema = useMemo(() => {
-    return generateYupSchema(schema, initialValues);
-  }, [schema, initialValues]);
-
-
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validate={(values) => {
+        try {
+          generateYupSchema(
+            schema,
+            values
+          ).validateSync(values, {
+            abortEarly: false,
+          });
+
+          return {};
+        } catch (error) {
+          if (
+            error instanceof Yup.ValidationError
+          ) {
+            return yupToFormErrors(error);
+          }
+
+          return {};
+        }
+      }}
       onSubmit={(values) => {
-        const filteredValues = filterHiddenFields(
-          schema,
-          values
-        )
+        const filteredValues =
+          filterHiddenFields(
+            schema,
+            values
+          );
 
         console.log(filteredValues);
       }}
+      validateOnChange
+      validateOnBlur
     >
       <Form>
         <FormRenderer schema={schema} />
 
-        <button type="submit">Submit</button>
+        <button type="submit">
+          Submit
+        </button>
       </Form>
     </Formik>
   );

@@ -1,10 +1,40 @@
+import get from 'lodash/get';
 import * as Yup from 'yup';
 import type {
   FormField,
   FormSchema,
+  ValidationConfig
 } from '../types/form.types';
 import { validationMappings } from './validationMappings';
 import { checkVisibility } from '../utils/checkVisibility';
+
+
+
+const applyValidationRules = (
+  validator: Yup.StringSchema,
+  rules: ValidationConfig
+) => {
+  let updatedValidator =
+    validator;
+
+  Object.entries(rules).forEach(
+    ([rule, value]) => {
+      const mapping =
+        validationMappings[
+        rule as keyof typeof validationMappings
+        ];
+
+      if (mapping) {
+        updatedValidator = mapping(
+          updatedValidator,
+          value as never
+        );
+      }
+    }
+  );
+
+  return updatedValidator;
+};
 
 const generateFieldValidation = (
   field: FormField,
@@ -38,24 +68,36 @@ const generateFieldValidation = (
     return Yup.object(groupShape);
   }
 
-  let validator =
-    Yup.string();
+  let validator = Yup.string();
 
+  // static
   if (field.validation) {
-    Object.entries(
+    validator = applyValidationRules(
+      validator,
       field.validation
-    ).forEach(
-      ([rule, value]) => {
-        const mapping =
-          validationMappings[
-          rule as keyof typeof validationMappings
-          ];
+    );
+  }
 
-        if (mapping) {
-          validator = mapping(
-            validator,
-            value as never
+  // dynamic
+  if (field.dynamicValidation) {
+    field.dynamicValidation.forEach(
+      (dynamicRule) => {
+        const dependencyValue =
+          get(
+            values,
+            dynamicRule.dependsOn
           );
+
+        const shouldApply =
+          dependencyValue ===
+          dynamicRule.equals;
+
+        if (shouldApply) {
+          validator =
+            applyValidationRules(
+              validator,
+              dynamicRule.rules
+            );
         }
       }
     );

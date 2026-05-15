@@ -16,6 +16,14 @@ export type VisibilityConfig = {
   equals: unknown;
 };
 
+export type DynamicValidationRule = {
+  dependsOn: string;
+
+  equals: unknown;
+
+  rules: ValidationConfig;
+};
+
 export type BaseField = {
   type: string;
 
@@ -26,6 +34,8 @@ export type BaseField = {
   validation?: ValidationConfig;
 
   visibility?: VisibilityConfig;
+
+  dynamicValidation?: DynamicValidationRule[];
 };
 
 export type TextField =
