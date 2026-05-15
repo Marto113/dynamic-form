@@ -2,29 +2,21 @@ import { useEffect, useMemo, useState } from 'react';
 import JsonEditor from '../components/editor/JsonEditor';
 import FormContainer from '../components/form/FormContainer';
 import { basicSchema } from '../examples/basic-schema';
+import { useDebounce } from '../hooks/useDebounce';
 
 const initialJson = JSON.stringify(basicSchema, null, 2);
 
 const FormBuilderPage = () => {
   const [editorValue, setEditorValue] = useState(initialJson);
-
-  const [jsonInput, setJsonInput] = useState(initialJson);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setJsonInput(editorValue);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [editorValue]);
+  const debouncedJsonInput = useDebounce(editorValue, 300);
 
   const parsedSchema = useMemo(() => {
     try {
-      return JSON.parse(jsonInput);
+      return JSON.parse(debouncedJsonInput);
     } catch {
       return null;
     }
-  }, [jsonInput]);
+  }, [debouncedJsonInput]);
 
   return (
     <div
@@ -43,7 +35,7 @@ const FormBuilderPage = () => {
 
       <div>
         {parsedSchema && (
-          <FormContainer key={jsonInput} schema={parsedSchema} />
+          <FormContainer key={debouncedJsonInput} schema={parsedSchema} />
         )}
       </div>
     </div>
