@@ -12,14 +12,10 @@ const GroupRenderer = ({
   groupPath,
 }: Props) => {
   return (
-    <div
-      style={{
-        border: '1px solid gray',
-        padding: '16px',
-        marginBottom: '16px',
-      }}
-    >
-      <h3>{group.label}</h3>
+    <div className="form-group">
+      <h3 className="form-group-title">
+        {group.label}
+      </h3>
 
       {group.fields.map((node) => (
         <RenderNode

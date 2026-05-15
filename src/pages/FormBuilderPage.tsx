@@ -19,23 +19,26 @@ const FormBuilderPage = () => {
   }, [debouncedJsonInput]);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-        padding: '20px',
-      }}
-    >
-      <div>
-        <JsonEditor value={editorValue} onChange={setEditorValue} />
+    <div className="app">
+      <div className="editor-panel">
+        <JsonEditor
+          value={editorValue}
+          onChange={setEditorValue}
+        />
 
-        {!parsedSchema && <p style={{ color: 'red' }}>Invalid JSON format</p>}
+        {!parsedSchema && (
+          <p className="json-error">
+            Invalid JSON format
+          </p>
+        )}
       </div>
 
-      <div>
+      <div className="form-panel">
         {parsedSchema && (
-          <FormContainer key={debouncedJsonInput} schema={parsedSchema} />
+          <FormContainer
+            key={debouncedJsonInput}
+            schema={parsedSchema}
+          />
         )}
       </div>
     </div>

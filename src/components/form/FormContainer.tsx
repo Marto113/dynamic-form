@@ -1,8 +1,9 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import {
   Formik,
   Form,
   yupToFormErrors,
+  type FormikValues,
 } from 'formik';
 import * as Yup from 'yup';
 import FormRenderer from './renderer/FormRenderer';
@@ -20,6 +21,8 @@ const FormContainer = ({ schema }: Props) => {
   const initialValues = useMemo(() => {
     return generateInitialValues(schema);
   }, [schema]);
+
+  const [submittedData, setSubmittedData,] = useState<FormikValues | null>(null);
 
   return (
     <Formik
@@ -51,6 +54,7 @@ const FormContainer = ({ schema }: Props) => {
             values
           );
 
+        setSubmittedData(filteredValues);
         console.log(filteredValues);
       }}
       validateOnChange
@@ -64,6 +68,55 @@ const FormContainer = ({ schema }: Props) => {
         <button type="submit">
           Submit
         </button>
+
+        {submittedData && (
+          <div className="submission-result">
+            <h3>
+              Form submitted successfully
+            </h3>
+
+            <pre>
+              {JSON.stringify(
+                submittedData,
+                null,
+                2
+              )}
+            </pre>
+
+            <button
+              type="button"
+              onClick={() => {
+                const blob =
+                  new Blob(
+                    [
+                      JSON.stringify(
+                        submittedData,
+                        null,
+                        2
+                      ),
+                    ],
+                    {
+                      type:
+                        'application/json',
+                    }
+                  );
+
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+
+                link.href = url;
+                link.download = 'form-data.json';
+
+                link.click();
+
+                URL.revokeObjectURL(url);
+              }}
+            >
+              Download JSON
+            </button>
+          </div>
+        )}
       </Form>
     </Formik>
   );

@@ -77,11 +77,6 @@ export type RadioField =
     options: string[];
   };
 
-export type ValidatedTextField =
-  BaseField & {
-    type: 'validated-text';
-  };
-
 export type GroupField =
   BaseField & {
     type: 'group';
@@ -97,7 +92,6 @@ export type FormField =
   | CheckboxField
   | DropdownField
   | RadioField
-  | ValidatedTextField
   | GroupField;
 
 export type FormSchema = {
